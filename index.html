@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="data:," />
+    <title>Nghỉ Việc Được Gì — Checker quyền lợi nghỉ việc theo luật 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --blue:#1d4ed8; --blue-dark:#173a75; --blue-deep:#122c5c;
+        --blue-soft:#eaf1fe; --blue-mid:#c9dbfb;
+        --ink:#16233c; --ink-2:#43536e; --ink-3:#71809a;
+        --bg:#f4f7fc; --card:#ffffff; --line:#dde5f1;
+        --ok:#0e7a3d; --ok-bg:#e7f6ec;
+        --warn:#9a5b00; --warn-bg:#fdf3e0;
+        --bad:#b3261e; --bad-bg:#fdecea;
+        --radius:14px;
+        --shadow:0 1px 2px rgba(18,44,92,.06),0 8px 24px rgba(18,44,92,.06);
+      }
+      *{box-sizing:border-box}
+      html{-webkit-text-size-adjust:100%}
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+        font-size:16px; line-height:1.55;
+      }
+      .wrap{max-width:760px;margin:0 auto;padding:0 16px 64px}
+
+      /* ---------- Header ---------- */
+      header{padding:28px 0 8px}
+      .badge{
+        display:inline-block;background:var(--blue-soft);color:var(--blue-dark);
+        border:1px solid var(--blue-mid);border-radius:999px;
+        font-size:12.5px;font-weight:600;padding:4px 12px;margin-bottom:12px;
+      }
+      h1{font-size:32px;line-height:1.15;margin:0 0 10px;font-weight:800;color:var(--blue-deep);letter-spacing:-.01em}
+      .lead{margin:0 0 14px;color:var(--ink-2);font-size:16.5px}
+      .disclaimer{
+        background:var(--warn-bg);border:1px solid #f0dcb2;border-radius:var(--radius);
+        padding:12px 14px;font-size:14px;color:#6b4a08;margin:14px 0 4px;
+      }
+      .disclaimer strong{color:#543a05}
+
+      /* ---------- Cards & form ---------- */
+      .card{
+        background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+        box-shadow:var(--shadow);padding:20px;margin-top:18px;
+      }
+      .card h2{font-size:18px;margin:0 0 4px;color:var(--blue-deep);font-weight:700}
+      .card .sub{margin:0 0 14px;color:var(--ink-3);font-size:13.5px}
+      .examples{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+      @media (max-width:560px){.examples{grid-template-columns:1fr}}
+      .ex-btn{
+        text-align:left;background:var(--blue-soft);border:1px solid var(--blue-mid);
+        border-radius:12px;padding:12px 14px;cursor:pointer;font:inherit;color:var(--ink);
+      }
+      .ex-btn:hover{border-color:var(--blue)}
+      .ex-btn strong{display:block;color:var(--blue-dark);font-size:14.5px;margin-bottom:2px}
+      .ex-btn span{font-size:13px;color:var(--ink-2)}
+
+      .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+      @media (max-width:560px){.grid2{grid-template-columns:1fr}}
+      .field{margin-bottom:14px}
+      .field:last-child{margin-bottom:0}
+      label{display:block;font-weight:600;font-size:14.5px;margin-bottom:6px}
+      .hint{font-size:13px;color:var(--ink-3);margin-top:5px}
+      .hint button{
+        background:none;border:none;padding:0;font:inherit;font-size:13px;
+        color:var(--blue);font-weight:600;cursor:pointer;text-decoration:underline;
+      }
+      input[type="text"],input[type="number"],input[type="date"],select{
+        width:100%;padding:12px;font:inherit;font-size:16px;color:var(--ink);
+        background:#fff;border:1.5px solid var(--line);border-radius:10px;appearance:none;
+      }
+      input:focus,select:focus{outline:2px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
+      .money{position:relative}
+      .money input{padding-right:52px;font-weight:600}
+      .money .unit{
+        position:absolute;right:14px;top:50%;transform:translateY(-50%);
+        color:var(--ink-3);font-size:13.5px;font-weight:600;pointer-events:none;
+      }
+      .duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+      .duo .mini label{font-size:13px;color:var(--ink-2)}
+      .err{
+        display:none;background:var(--bad-bg);border:1px solid #f3c1bd;color:var(--bad);
+        border-radius:10px;padding:10px 12px;font-size:14px;margin-top:12px;font-weight:500;
+      }
+      .err.show{display:block}
+
+      .btn-calc{
+        display:block;width:100%;margin-top:20px;padding:17px;
+        background:var(--blue);color:#fff;border:none;border-radius:14px;
+        font:inherit;font-size:18px;font-weight:800;cursor:pointer;
+        box-shadow:0 6px 18px rgba(29,78,216,.28);
+      }
+      .btn-calc:active{transform:translateY(1px)}
+      .btn-calc:hover{background:#1a45bb}
+
+      /* ---------- Results ---------- */
+      #results{display:none}
+      #results.show{display:block}
+      .total-card{
+        background:linear-gradient(160deg,var(--blue-deep),var(--blue));
+        color:#fff;border-radius:16px;padding:22px;margin-top:22px;
+        box-shadow:0 10px 28px rgba(18,44,92,.3);
+      }
+      .total-card .t-label{font-size:13.5px;font-weight:600;opacity:.85;text-transform:uppercase;letter-spacing:.04em}
+      .total-card .t-value{font-size:34px;font-weight:800;line-height:1.15;margin:4px 0 14px}
+      @media (max-width:400px){.total-card .t-value{font-size:28px}}
+      .total-rows{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+      @media (max-width:560px){.total-rows{grid-template-columns:1fr}}
+      .t-row{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:10px 12px}
+      .t-row .k{font-size:12.5px;opacity:.85}
+      .t-row .v{font-size:18px;font-weight:700}
+      .t-row .d{font-size:12.5px;opacity:.85}
+
+      .result-card{border-left:5px solid var(--blue)}
+      .result-card.ok{border-left-color:var(--ok)}
+      .result-card.zero{border-left-color:#b8c4d8}
+      .result-card.no{border-left-color:var(--bad)}
+      .r-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+      .r-head h3{margin:0;font-size:17px;color:var(--blue-deep)}
+      .r-amount{font-size:22px;font-weight:800;color:var(--blue-dark);white-space:nowrap}
+      .r-amount.none{color:var(--ink-3);font-size:17px}
+      .pill{
+        display:inline-block;font-size:12px;font-weight:700;border-radius:999px;
+        padding:2px 10px;margin-top:6px;
+      }
+      .pill.ok{background:var(--ok-bg);color:var(--ok)}
+      .pill.no{background:var(--bad-bg);color:var(--bad)}
+      .pill.info{background:var(--blue-soft);color:var(--blue-dark)}
+      .formula{
+        background:#f2f6fd;border:1px solid var(--line);border-radius:10px;
+        padding:10px 12px;font-size:14px;margin:12px 0;font-weight:500;color:var(--blue-deep);
+      }
+      .result-card p{margin:8px 0;font-size:14.5px;color:var(--ink-2)}
+      .result-card p strong{color:var(--ink)}
+      .law{font-size:13px;color:var(--ink-3);margin-top:10px}
+      .law a{color:var(--blue);font-weight:600}
+      .alert{
+        border-radius:10px;padding:11px 13px;font-size:14px;margin:12px 0;
+      }
+      .alert.warn{background:var(--warn-bg);border:1px solid #f0dcb2;color:#6b4a08}
+      .alert.bad{background:var(--bad-bg);border:1px solid #f3c1bd;color:#7c1d18}
+      .alert.ok{background:var(--ok-bg);border:1px solid #bfe6cc;color:#0b5a2d}
+      ul.tight{margin:8px 0;padding-left:20px}
+      ul.tight li{margin:4px 0;font-size:14.5px;color:var(--ink-2)}
+      ul.tight li strong{color:var(--ink)}
+
+      /* checklist styled as list, not checkboxes */
+      .check-list{list-style:none;margin:10px 0;padding:0}
+      .check-list li{
+        display:flex;gap:10px;padding:10px 12px;border:1px solid var(--line);
+        border-radius:10px;margin-bottom:8px;font-size:14.5px;background:#fbfcfe;
+      }
+      .check-list .n{
+        flex:0 0 auto;width:24px;height:24px;border-radius:50%;
+        background:var(--blue);color:#fff;font-size:13px;font-weight:700;
+        display:flex;align-items:center;justify-content:center;margin-top:1px;
+      }
+      .deadline-box{
+        background:var(--warn-bg);border:1px solid #f0dcb2;border-radius:10px;
+        padding:12px 14px;margin:12px 0;font-size:15px;color:#6b4a08;
+      }
+      .deadline-box strong{font-size:17px;color:#543a05}
+
+      .btn-copy{
+        display:block;width:100%;margin-top:18px;padding:14px;
+        background:#fff;color:var(--blue-dark);border:2px solid var(--blue);
+        border-radius:12px;font:inherit;font-size:16px;font-weight:700;cursor:pointer;
+      }
+      .btn-copy:hover{background:var(--blue-soft)}
+      .copy-done{color:var(--ok);font-weight:600}
+
+      table.mini{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+      table.mini th,table.mini td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:right}
+      table.mini th:first-child,table.mini td:first-child{text-align:left}
+      table.mini th{color:var(--ink-2);font-weight:600}
+      .src-list{font-size:13.5px;color:var(--ink-2)}
+      .src-list li{margin:6px 0}
+      .src-list a{color:var(--blue);font-weight:600}
+      footer{margin-top:26px;font-size:13.5px;color:var(--ink-3)}
+      footer .disclaimer{margin-top:14px}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <span class="badge">Cập nhật theo luật 2026 · Kiểm chứng ngày 10/11/2026</span>
+        <h1>Nghỉ Việc Được Gì</h1>
+        <p class="lead">Nhập lương và thời gian làm việc — công cụ tính ngay trợ cấp thôi việc, trợ cấp mất việc, bảo hiểm thất nghiệp và hạn nộp hồ sơ, kèm công thức và điều luật để bạn tự kiểm tra lại.</p>
+        <div class="disclaimer"><strong>Lưu ý:</strong> Chỉ tham khảo, không phải tư vấn pháp lý. Trường hợp phức tạp nên hỏi luật sư / công đoàn.</div>
+      </header>
+
+      <!-- Ví dụ mẫu -->
+      <section class="card">
+        <h2>Thử nhanh với ví dụ mẫu</h2>
+        <p class="sub">Bấm một ví dụ để điền sẵn số liệu, rồi bấm “Tính ngay”.</p>
+        <div class="examples">
+          <button type="button" class="ex-btn" id="ex1">
+            <strong>Ví dụ 1 — Làm 3 năm, đóng đủ BHTN</strong>
+            <span>Lương 12 triệu · Làm 3 năm · Đóng BHTN 36 tháng · Vùng I</span>
+          </button>
+          <button type="button" class="ex-btn" id="ex2">
+            <strong>Ví dụ 2 — Mới làm 6 tháng</strong>
+            <span>Lương 8 triệu · Làm 6 tháng · Chưa đủ 12 tháng để hưởng</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Form -->
+      <form id="form" novalidate>
+        <section class="card">
+          <h2>1 · Lương của bạn</h2>
+          <p class="sub">Lương bình quân trong 6 tháng liền kề trước khi nghỉ, theo hợp đồng lao động.</p>
+          <div class="field">
+            <label for="salaryAvg">Lương bình quân 6 tháng liền kề</label>
+            <div class="money">
+              <input type="text" id="salaryAvg" inputmode="numeric" autocomplete="off" placeholder="Ví dụ: 12.000.000" />
+              <span class="unit">đ/tháng</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="salaryBhtn">Lương đóng BHTN bình quân 6 tháng gần nhất</label>
+            <div class="money">
+              <input type="text" id="salaryBhtn" inputmode="numeric" autocomplete="off" placeholder="Mặc định bằng lương bình quân" />
+              <span class="unit">đ/tháng</span>
+            </div>
+            <p class="hint" id="bhtnHint">Đang tự động bằng lương bình quân ở trên. Nếu lương đóng BHTN khác (ví dụ chỉ đóng trên lương cơ bản), hãy sửa trực tiếp ô này. <button type="button" id="bhtnReset" style="display:none">Đặt lại bằng lương bình quân</button></p>
+          </div>
+          <div class="field">
+            <label for="region">Vùng lương tối thiểu nơi bạn làm việc</label>
+            <select id="region">
+              <option value="I" selected>Vùng I — tối thiểu 5.310.000 đ/tháng</option>
+              <option value="II">Vùng II — tối thiểu 4.730.000 đ/tháng</option>
+              <option value="III">Vùng III — tối thiểu 4.140.000 đ/tháng</option>
+              <option value="IV">Vùng IV — tối thiểu 3.700.000 đ/tháng</option>
+            </select>
+            <p class="hint">Theo Nghị định 293/2025/NĐ-CP, áp dụng từ 01/01/2026. Vùng quyết định mức trần bảo hiểm thất nghiệp.</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>2 · Thời gian làm việc &amp; đóng bảo hiểm</h2>
+          <p class="sub">Xem trên sổ BHXH hoặc ứng dụng VssID nếu bạn không nhớ chính xác.</p>
+          <div class="field">
+            <label>Tổng thời gian làm việc thực tế tại công ty</label>
+            <div class="duo">
+              <div class="mini"><label for="workYears">Năm</label><input type="number" id="workYears" min="0" max="60" inputmode="numeric" placeholder="0" /></div>
+              <div class="mini"><label for="workMonths">Tháng</label><input type="number" id="workMonths" min="0" max="11" inputmode="numeric" placeholder="0" /></div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Thời gian đã đóng BHXH bắt buộc (tại công ty này)</label>
+            <div class="duo">
+              <div class="mini"><label for="bhxhYears">Năm</label><input type="number" id="bhxhYears" min="0" max="60" inputmode="numeric" placeholder="0" /></div>
+              <div class="mini"><label for="bhxhMonths">Tháng</label><input type="number" id="bhxhMonths" min="0" max="11" inputmode="numeric" placeholder="0" /></div>
+            </div>
+            <p class="hint">Thời gian này được trừ ra khi tính trợ cấp thôi việc — đóng BHXH càng đầy đủ, trợ cấp thôi việc càng nhỏ và thường bằng 0.</p>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label for="bhtnMonths">Tổng thời gian đã đóng BHTN (tháng)</label>
+              <input type="number" id="bhtnMonths" min="0" max="720" inputmode="numeric" placeholder="Ví dụ: 36" />
+            </div>
+            <div class="field">
+              <label for="priorMonths">Đã hưởng trợ cấp ở công ty này (tháng)</label>
+              <input type="number" id="priorMonths" min="0" max="720" inputmode="numeric" placeholder="0" value="0" />
+              <p class="hint">Thời gian làm việc đã được chi trả trợ cấp thôi việc / mất việc trước đó. Hầu hết trường hợp để 0.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>3 · Hợp đồng &amp; lý do nghỉ</h2>
+          <div class="field">
+            <label for="contract">Loại hợp đồng lao động</label>
+            <select id="contract">
+              <option value="khong_xac_dinh">Không xác định thời hạn</option>
+              <option value="xac_dinh">Xác định thời hạn 12 – 36 tháng</option>
+              <option value="duoi_12">Dưới 12 tháng</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="reason">Lý do chấm dứt hợp đồng</label>
+            <select id="reason">
+              <option value="het_han">Hết hạn hợp đồng</option>
+              <option value="thoa_thuan">Hai bên thỏa thuận chấm dứt</option>
+              <option value="cong_ty_don_phuong">Công ty đơn phương chấm dứt (đúng luật)</option>
+              <option value="co_cau">Thay đổi cơ cấu, công nghệ / lý do kinh tế</option>
+              <option value="tu_nghi_dung_luat">Tôi tự nghỉ — đúng luật, báo trước đủ</option>
+              <option value="tu_nghi_trai_luat">Tôi tự nghỉ — trái luật / không báo trước</option>
+              <option value="sa_thai">Bị kỷ luật sa thải</option>
+              <option value="luong_huu">Đủ điều kiện hưởng lương hưu</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="endDate">Ngày chấm dứt hợp đồng</label>
+            <input type="date" id="endDate" />
+            <p class="hint">Ngày làm việc cuối cùng theo quyết định / thỏa thuận chấm dứt. Dùng để tính hạn 3 tháng nộp hồ sơ bảo hiểm thất nghiệp.</p>
+          </div>
+          <div class="err" id="formErr"></div>
+          <button type="submit" class="btn-calc">Tính ngay</button>
+          <p class="hint" style="text-align:center;margin-top:10px">Miễn phí · Không cần tài khoản · Tính ngay trên trình duyệt, số liệu bạn nhập không được gửi đi hay lưu lại.</p>
+        </section>
+      </form>
+
+      <!-- Kết quả -->
+      <div id="results" aria-live="polite"></div>
+
+      <!-- Nguồn số liệu -->
+      <section class="card">
+        <h2>Số liệu luật đang dùng</h2>
+        <p class="sub">Toàn bộ hằng số được nhập tay từ văn bản gốc, không lấy qua API. Khi luật đổi, các số này phải được cập nhật lại.</p>
+        <table class="mini">
+          <thead><tr><th>Vùng</th><th>Lương tối thiểu 2026</th><th>Trần BHTN/tháng (×5)</th></tr></thead>
+          <tbody>
+            <tr><td>Vùng I</td><td>5.310.000 đ</td><td>26.550.000 đ</td></tr>
+            <tr><td>Vùng II</td><td>4.730.000 đ</td><td>23.650.000 đ</td></tr>
+            <tr><td>Vùng III</td><td>4.140.000 đ</td><td>20.700.000 đ</td></tr>
+            <tr><td>Vùng IV</td><td>3.700.000 đ</td><td>18.500.000 đ</td></tr>
+          </tbody>
+        </table>
+        <ul class="src-list">
+          <li><strong>Lương tối thiểu vùng 2026:</strong> Nghị định 293/2025/NĐ-CP — tra cứu tại <a href="https://vbpl.vn" target="_blank" rel="noopener">vbpl.vn</a> · <a href="https://thuvienphapluat.vn" target="_blank" rel="noopener">thuvienphapluat.vn</a></li>
+          <li><strong>Trợ cấp thôi việc / mất việc, báo trước:</strong> Bộ luật Lao động 2019, Điều 35, 36, 40, 46, 47 — <a href="https://vbpl.vn" target="_blank" rel="noopener">vbpl.vn</a> · <a href="https://luatvietnam.vn" target="_blank" rel="noopener">luatvietnam.vn</a></li>
+          <li><strong>Bảo hiểm thất nghiệp:</strong> Luật Việc làm 74/2025/QH15 Điều 38–39 và Nghị định 374/2025/NĐ-CP Điều 14, hiệu lực 01/01/2026 — <a href="https://vbpl.vn" target="_blank" rel="noopener">vbpl.vn</a> · <a href="https://thuvienphapluat.vn" target="_blank" rel="noopener">thuvienphapluat.vn</a></li>
+          <li><strong>Nộp hồ sơ trực tuyến:</strong> <a href="https://dichvucong.gov.vn" target="_blank" rel="noopener">Cổng Dịch vụ công Quốc gia (dichvucong.gov.vn)</a></li>
+        </ul>
+      </section>
+
+      <footer>
+        <p><strong>Phạm vi công cụ:</strong> chỉ tính trợ cấp thôi việc, trợ cấp mất việc, bảo hiểm thất nghiệp và thời gian báo trước cho người lao động làm việc theo hợp đồng lao động. Chưa tính BHXH một lần, lương hưu, thuế thu nhập cá nhân; không áp dụng cho công chức / viên chức, lao động nước ngoài, hợp đồng thử việc và các trường hợp tranh chấp.</p>
+        <div class="disclaimer"><strong>Lưu ý:</strong> Chỉ tham khảo, không phải tư vấn pháp lý. Trường hợp phức tạp nên hỏi luật sư / công đoàn.</div>
+      </footer>
+    </div>
+
+    <script>
+    /* =====================================================================
+       HẰNG SỐ LUẬT — nhập tay từ văn bản gốc, kiểm chứng ngày 10/11/2026.
+       Đây là "file hằng số" của app: mọi con số pháp lý đều nằm ở đây,
+       kèm nguồn + ngày hiệu lực. Luật đổi thì chỉ sửa đúng khối này.
+       ===================================================================== */
+    var LUAT_2026 = {
+      kiemChungNgay: "10/11/2026",
+      // Nghị định 293/2025/NĐ-CP, hiệu lực 01/01/2026 — đồng/tháng
+      luongToiThieuVung: { I: 5310000, II: 4730000, III: 4140000, IV: 3700000 },
+      tranBhtnHeSo: 5,                 // trần BHTN = 5 × lương tối thiểu vùng (Luật Việc làm 2025, Điều 39)
+      bhtnTyLe: 0.60,                  // mức hưởng = 60% lương đóng BHTN bình quân 6 tháng (Điều 39)
+      bhtnThangToiDa: 12,              // hưởng tối đa 12 tháng (Điều 39)
+      thoiViecHeSo: 0.5,               // mỗi năm = 1/2 tháng lương (BLLĐ 2019, Điều 46)
+      matViecHeSo: 1,                  // mỗi năm = 1 tháng lương (BLLĐ 2019, Điều 47)
+      matViecToiThieuThangLuong: 2,    // trợ cấp mất việc ít nhất 2 tháng lương (Điều 47)
+      baoTruoc: {                      // BLLĐ 2019, Điều 35 & 36
+        khong_xac_dinh: "ít nhất 45 ngày",
+        xac_dinh: "ít nhất 30 ngày",
+        duoi_12: "ít nhất 3 ngày làm việc"
+      },
+      hanNopHoSoBhtnThang: 3           // nộp hồ sơ BHTN trong 3 tháng kể từ ngày chấm dứt (NĐ 374/2025)
+    };
+
+    var $ = function(id){ return document.getElementById(id); };
+
+    /* ---------- Định dạng tiền ---------- */
+    function parseMoney(str){
+      if(!str) return 0;
+      var n = parseInt(String(str).replace(/[^\d]/g,""), 10);
+      return isNaN(n) ? 0 : n;
+    }
+    function fmt(n){
+      return Math.round(n).toLocaleString("vi-VN") + " đ";
+    }
+    function fmtShort(n){
+      return Math.round(n).toLocaleString("vi-VN");
+    }
+    function attachMoneyFormat(el){
+      el.addEventListener("input", function(){
+        var raw = el.value.replace(/[^\d]/g,"");
+        if(!raw){ el.value = ""; return; }
+        el.value = parseInt(raw,10).toLocaleString("vi-VN");
+      });
+    }
+    attachMoneyFormat($("salaryAvg"));
+    attachMoneyFormat($("salaryBhtn"));
+
+    /* Lương đóng BHTN mặc định bám theo lương bình quân, cho tới khi người dùng tự sửa. */
+    var bhtnManual = false;
+    $("salaryAvg").addEventListener("input", function(){
+      if(!bhtnManual){ $("salaryBhtn").value = $("salaryAvg").value; }
+    });
+    $("salaryBhtn").addEventListener("input", function(){
+      bhtnManual = true;
+      $("bhtnReset").style.display = "inline";
+    });
+    $("bhtnReset").addEventListener("click", function(){
+      bhtnManual = false;
+      $("salaryBhtn").value = $("salaryAvg").value;
+      $("bhtnReset").style.display = "none";
+    });
+
+    /* Ngày chấm dứt mặc định: hôm nay */
+    (function(){
+      var t = new Date();
+      var pad = function(x){ return (x<10?"0":"")+x; };
+      $("endDate").value = t.getFullYear()+"-"+pad(t.getMonth()+1)+"-"+pad(t.getDate());
+    })();
+
+    function numVal(id){
+      var v = parseInt($(id).value, 10);
+      return isNaN(v) || v < 0 ? 0 : v;
+    }
+    function fmtDate(d){
+      var pad = function(x){ return (x<10?"0":"")+x; };
+      return pad(d.getDate())+"/"+pad(d.getMonth()+1)+"/"+d.getFullYear();
+    }
+    function addMonths(d, m){
+      var nd = new Date(d.getFullYear(), d.getMonth()+m, d.getDate());
+      return nd;
+    }
+    /* Quy đổi tháng lẻ thành năm tính trợ cấp (Nghị định 145/2020, Điều 8):
+       lẻ 1–dưới 6 tháng tính 1/2 năm; lẻ 6–dưới 12 tháng tính 1 năm. */
+    function monthsToYears(months){
+      var full = Math.floor(months/12), rem = months % 12;
+      if(rem === 0) return full;
+      if(rem < 6) return full + 0.5;
+      return full + 1;
+    }
+    function yearsLabel(y){
+      return (y % 1 === 0 ? y : String(y).replace(".", ",")) + " năm";
+    }
+
+    /* ---------- Ví dụ mẫu ---------- */
+    function setMoney(el, n){ el.value = n.toLocaleString("vi-VN"); }
+    $("ex1").addEventListener("click", function(){
+      setMoney($("salaryAvg"), 12000000);
+      bhtnManual = false; $("bhtnReset").style.display = "none";
+      setMoney($("salaryBhtn"), 12000000);
+      $("region").value = "I";
+      $("workYears").value = 3; $("workMonths").value = 0;
+      $("bhxhYears").value = 3; $("bhxhMonths").value = 0;
+      $("bhtnMonths").value = 36; $("priorMonths").value = 0;
+      $("contract").value = "khong_xac_dinh";
+      $("reason").value = "thoa_thuan";
+      $("formErr").classList.remove("show");
+      window.scrollTo({top: $("form").offsetTop - 10, behavior: "smooth"});
+    });
+    $("ex2").addEventListener("click", function(){
+      setMoney($("salaryAvg"), 8000000);
+      bhtnManual = false; $("bhtnReset").style.display = "none";
+      setMoney($("salaryBhtn"), 8000000);
+      $("region").value = "I";
+      $("workYears").value = 0; $("workMonths").value = 6;
+      $("bhxhYears").value = 0; $("bhxhMonths").value = 6;
+      $("bhtnMonths").value = 6; $("priorMonths").value = 0;
+      $("contract").value = "xac_dinh";
+      $("reason").value = "het_han";
+      $("formErr").classList.remove("show");
+      window.scrollTo({top: $("form").offsetTop - 10, behavior: "smooth"});
+    });
+
+    /* ---------- Tính toán ---------- */
+    var lastSummaryText = "";
+
+    $("form").addEventListener("submit", function(e){
+      e.preventDefault();
+      var err = $("formErr");
+      err.classList.remove("show");
+
+      var salaryAvg  = parseMoney($("salaryAvg").value);
+      var salaryBhtn = parseMoney($("salaryBhtn").value);
+      var region     = $("region").value;
+      var totalMonths = numVal("workYears")*12 + numVal("workMonths");
+      var bhxhMonths  = numVal("bhxhYears")*12 + numVal("bhxhMonths");
+      var bhtnMonths  = numVal("bhtnMonths");
+      var priorMonths = numVal("priorMonths");
+      var contract    = $("contract").value;
+      var reason      = $("reason").value;
+      var endVal      = $("endDate").value;
+
+      var errors = [];
+      if(salaryAvg <= 0) errors.push("Hãy nhập lương bình quân 6 tháng liền kề.");
+      if(salaryBhtn <= 0) errors.push("Hãy nhập lương đóng BHTN bình quân 6 tháng gần nhất.");
+      if(totalMonths <= 0) errors.push("Hãy nhập tổng thời gian làm việc.");
+      if(bhxhMonths > totalMonths) errors.push("Thời gian đóng BHXH không thể lớn hơn tổng thời gian làm việc.");
+      if(bhtnMonths > totalMonths && totalMonths > 0) errors.push("Lưu ý: thời gian đóng BHTN bạn nhập đang lớn hơn tổng thời gian làm việc tại công ty này — nếu bạn cộng dồn BHTN từ công ty cũ thì vẫn hợp lệ, kết quả bên dưới vẫn tính theo số bạn nhập.");
+      if(!endVal) errors.push("Hãy chọn ngày chấm dứt hợp đồng.");
+      var hardErrors = errors.filter(function(x){ return x.indexOf("Lưu ý:") !== 0; });
+      if(hardErrors.length){
+        err.textContent = hardErrors.join(" ");
+        err.classList.add("show");
+        err.scrollIntoView({behavior:"smooth", block:"center"});
+        return;
+      }
+      var softNote = errors.length ? errors[0] : "";
+
+      var minWage = LUAT_2026.luongToiThieuVung[region];
+      var capBhtn = LUAT_2026.tranBhtnHeSo * minWage;
+      var endDate = new Date(endVal + "T12:00:00");
+      var deadline = addMonths(endDate, LUAT_2026.hanNopHoSoBhtnThang);
+
+      /* ===== 1. Trợ cấp thôi việc — Điều 46 BLLĐ 2019 ===== */
+      var tvReasons = { het_han:1, thoa_thuan:1, cong_ty_don_phuong:1, tu_nghi_dung_luat:1 };
+      var tvMonthsCounted = Math.max(0, totalMonths - bhxhMonths - priorMonths);
+      var tvYears = monthsToYears(tvMonthsCounted);
+      var tv = { amount: 0, status: "", html: "" };
+      if(reason === "co_cau"){
+        tv.status = "no";
+        tv.html = "<p>Trường hợp của bạn thuộc diện <strong>trợ cấp mất việc làm</strong> (Điều 47) thay cho trợ cấp thôi việc — xem mục 2 bên dưới. Hai khoản này không cộng dồn cho cùng một quãng thời gian làm việc.</p>";
+      } else if(reason === "luong_huu"){
+        tv.status = "no";
+        tv.html = "<p><strong>Không được hưởng trợ cấp thôi việc:</strong> người lao động đủ điều kiện hưởng lương hưu thì người sử dụng lao động không phải trả trợ cấp thôi việc (Điều 46 khoản 1, Bộ luật Lao động 2019).</p>";
+      } else if(reason === "tu_nghi_trai_luat"){
+        tv.status = "no";
+        tv.html = "<p><strong>Không được hưởng trợ cấp thôi việc:</strong> đơn phương chấm dứt hợp đồng trái pháp luật thì không được hưởng trợ cấp thôi việc và còn phải bồi thường cho công ty (Điều 40, Bộ luật Lao động 2019) — chi tiết ở mục báo trước bên dưới.</p>";
+      } else if(reason === "sa_thai"){
+        tv.status = "no";
+        tv.html = "<p><strong>Không được hưởng trợ cấp thôi việc:</strong> các trường hợp được trả trợ cấp thôi việc tại Điều 46 không bao gồm trường hợp bị kỷ luật sa thải (Điều 34 khoản 8, Bộ luật Lao động 2019).</p>";
+      } else if(totalMonths < 12){
+        tv.status = "no";
+        tv.html = "<p><strong>Chưa đủ điều kiện:</strong> trợ cấp thôi việc chỉ áp dụng khi đã làm việc thường xuyên đủ 12 tháng trở lên. Bạn mới làm " + totalMonths + " tháng.</p>";
+      } else if(tvMonthsCounted <= 0){
+        tv.status = "zero";
+        tv.html = "<p><strong>Bằng 0 — và đây là trường hợp phổ biến nhất.</strong> Thời gian tính trợ cấp phải trừ đi thời gian đã đóng BHXH bắt buộc. Vì bạn đã đóng BHXH đủ suốt " + totalMonths + " tháng làm việc, thời gian tính hưởng còn 0, nên trợ cấp thôi việc = 0. Quyền lợi chính của bạn lúc này nằm ở <strong>bảo hiểm thất nghiệp</strong> (mục 3).</p>";
+      } else {
+        tv.amount = LUAT_2026.thoiViecHeSo * tvYears * salaryAvg;
+        tv.status = "ok";
+        tv.html = "<p>Bạn còn " + tvMonthsCounted + " tháng làm việc chưa được đóng BHXH bắt buộc — đây là quãng thời gian được tính trợ cấp thôi việc.</p>";
+      }
+      var tvFormula = "1/2 × " + yearsLabel(tvYears) + " × " + fmt(salaryAvg) + " &nbsp;(thời gian tính hưởng: " + totalMonths + " tháng làm việc − " + bhxhMonths + " tháng đã đóng BHXH − " + priorMonths + " tháng đã hưởng trợ cấp = " + tvMonthsCounted + " tháng)";
+
+      /* ===== 2. Trợ cấp mất việc — Điều 47 BLLĐ 2019 ===== */
+      var mvMonthsCounted = Math.max(0, totalMonths - bhtnMonths - priorMonths);
+      var mvYears = monthsToYears(mvMonthsCounted);
+      var mv = { amount: 0, status: "", html: "" };
+      if(reason !== "co_cau"){
+        mv.status = "no";
+        mv.html = "<p>Chỉ áp dụng khi bạn <strong>mất việc do công ty thay đổi cơ cấu, công nghệ hoặc vì lý do kinh tế</strong> (Điều 42 &amp; 47, Bộ luật Lao động 2019). Lý do nghỉ bạn đã chọn không thuộc trường hợp này.</p>";
+      } else if(totalMonths < 12){
+        mv.status = "no";
+        mv.html = "<p><strong>Chưa đủ điều kiện:</strong> trợ cấp mất việc chỉ áp dụng khi đã làm việc đủ 12 tháng trở lên. Bạn mới làm " + totalMonths + " tháng.</p>";
+      } else if(mvMonthsCounted <= 0){
+        mv.status = "zero";
+        mv.html = "<p><strong>Bằng 0:</strong> thời gian tính trợ cấp mất việc phải trừ đi thời gian đã tham gia bảo hiểm thất nghiệp. Bạn đã đóng BHTN đủ suốt thời gian làm việc nên thời gian tính hưởng còn 0 — quyền lợi chính chuyển sang bảo hiểm thất nghiệp (mục 3).</p>";
+      } else {
+        var mvRaw = LUAT_2026.matViecHeSo * mvYears * salaryAvg;
+        mv.amount = Math.max(mvRaw, LUAT_2026.matViecToiThieuThangLuong * salaryAvg);
+        mv.status = "ok";
+        mv.html = "<p>Thời gian tính hưởng: " + totalMonths + " tháng làm việc − " + bhtnMonths + " tháng đã đóng BHTN − " + priorMonths + " tháng đã hưởng trợ cấp = " + mvMonthsCounted + " tháng (" + yearsLabel(mvYears) + ")." +
+          (mvRaw < LUAT_2026.matViecToiThieuThangLuong * salaryAvg ? " Số tiền theo năm công tác (" + fmt(mvRaw) + ") thấp hơn mức tối thiểu 2 tháng lương, nên được nâng lên mức tối thiểu theo luật." : "") + "</p>";
+      }
+      var mvFormula = "1 × " + yearsLabel(mvYears) + " × " + fmt(salaryAvg) + ", tối thiểu 2 tháng lương = " + fmt(2 * salaryAvg);
+
+      /* ===== 3. Bảo hiểm thất nghiệp — Luật Việc làm 74/2025, Điều 38–39 ===== */
+      var monthlyRaw = LUAT_2026.bhtnTyLe * salaryBhtn;
+      var monthly = Math.min(monthlyRaw, capBhtn);
+      var capped = monthlyRaw > capBhtn;
+      var duration = 0;
+      if(bhtnMonths >= 12){
+        if(bhtnMonths <= 36) duration = 3;
+        else duration = Math.min(LUAT_2026.bhtnThangToiDa, 3 + Math.floor((bhtnMonths - 36) / 12));
+      }
+      var lawOk = (reason !== "tu_nghi_trai_luat" && reason !== "luong_huu");
+      var contribOk = bhtnMonths >= 12;
+      var bhtnEligible = lawOk && contribOk;
+      var bhtnTotal = bhtnEligible ? monthly * duration : 0;
+      var windowMonths = (contract === "duoi_12") ? 36 : 24;
+      var bhtn = { status: bhtnEligible ? "ok" : "no", html: "" };
+      var bhtnAlerts = "";
+      if(reason === "tu_nghi_trai_luat"){
+        bhtnAlerts += "<div class='alert bad'><strong>Không đủ điều kiện hưởng BHTN:</strong> người đơn phương chấm dứt hợp đồng lao động trái pháp luật không được hưởng trợ cấp thất nghiệp (Luật Việc làm 2025, Điều 38).</div>";
+      }
+      if(reason === "luong_huu"){
+        bhtnAlerts += "<div class='alert bad'><strong>Không đủ điều kiện hưởng BHTN:</strong> người đủ điều kiện hưởng lương hưu không thuộc diện hưởng trợ cấp thất nghiệp (Luật Việc làm 2025, Điều 38).</div>";
+      }
+      if(!contribOk){
+        bhtnAlerts += "<div class='alert warn'><strong>Chưa đủ điều kiện đóng:</strong> cần đóng BHTN đủ 12 tháng trong " + windowMonths + " tháng trước khi chấm dứt hợp đồng. Bạn mới đóng " + bhtnMonths + " tháng.</div>";
+      }
+      if(bhtnEligible){
+        bhtnAlerts += "<div class='alert ok'><strong>Đủ điều kiện cơ bản</strong> (với giả định " + bhtnMonths + " tháng đóng BHTN nằm trong " + windowMonths + " tháng trước ngày chấm dứt). Nhớ nộp đủ hồ sơ trước hạn <strong>" + fmtDate(deadline) + "</strong> — quá 3 tháng là mất quyền lợi. Tiền được hưởng kể từ <strong>ngày làm việc thứ 11</strong> kể từ ngày bạn nộp đủ hồ sơ.</div>";
+        if(capped){
+          bhtnAlerts += "<div class='alert warn'>60% lương đóng BHTN của bạn là " + fmt(monthlyRaw) + "/tháng — vượt trần " + fmt(capBhtn) + "/tháng (5 lần lương tối thiểu vùng " + region + ") nên mức hưởng bị chặn ở mức trần.</div>";
+        }
+      }
+      var bhtnFormula = "60% × " + fmt(salaryBhtn) + " = " + fmt(monthlyRaw) + "/tháng, trần vùng " + region + " là " + fmt(capBhtn) + "/tháng → hưởng " + fmt(monthly) + "/tháng × " + duration + " tháng";
+
+      /* ===== 4. Báo trước — Điều 35 & 36 BLLĐ 2019 ===== */
+      var baoTruocTxt = LUAT_2026.baoTruoc[contract];
+      var contractLabel = { khong_xac_dinh: "không xác định thời hạn", xac_dinh: "xác định thời hạn 12–36 tháng", duoi_12: "dưới 12 tháng" }[contract];
+
+      /* ===== Tổng tiền ===== */
+      var companyPays = tv.amount + mv.amount;
+      var grandTotal = companyPays + bhtnTotal;
+
+      /* ----- Render ----- */
+      var pillOk  = "<span class='pill ok'>Được hưởng</span>";
+      var pillNo  = "<span class='pill no'>Không được hưởng</span>";
+      var pillZero= "<span class='pill info'>Bằng 0 theo công thức</span>";
+      function pillFor(s){ return s === "ok" ? pillOk : (s === "zero" ? pillZero : pillNo); }
+      function amountHtml(v, s){
+        if(s === "ok") return "<div class='r-amount'>" + fmt(v) + "</div>";
+        if(s === "zero") return "<div class='r-amount none'>0 đ</div>";
+        return "<div class='r-amount none'>—</div>";
+      }
+
+      var html = "";
+      html += "<div class='total-card'>" +
+        "<div class='t-label'>Tổng quyền lợi dự kiến</div>" +
+        "<div class='t-value'>" + fmt(grandTotal) + "</div>" +
+        "<div class='total-rows'>" +
+          "<div class='t-row'><div class='k'>Công ty trả một lần (trợ cấp)</div><div class='v'>" + fmt(companyPays) + "</div><div class='d'>Trả cùng kỳ lương cuối / khi chấm dứt</div></div>" +
+          "<div class='t-row'><div class='k'>Bảo hiểm thất nghiệp (chi trả hằng tháng)</div><div class='v'>" + fmt(bhtnTotal) + "</div><div class='d'>" + (bhtnEligible ? fmt(monthly) + "/tháng × " + duration + " tháng" : "Chưa đủ điều kiện") + "</div></div>" +
+        "</div></div>";
+
+      if(softNote) html += "<div class='alert warn' style='margin-top:14px'>" + softNote + "</div>";
+
+      /* Thẻ 1: thôi việc */
+      html += "<section class='card result-card " + tv.status + "'>" +
+        "<div class='r-head'><div><h3>1 · Trợ cấp thôi việc</h3>" + pillFor(tv.status) + "</div>" + amountHtml(tv.amount, tv.status) + "</div>" +
+        "<div class='formula'>Công thức: 1/2 × thời gian tính hưởng × lương bình quân 6 tháng liền kề<br/>= " + tvFormula + "</div>" +
+        tv.html +
+        "<p class='law'>Căn cứ: Điều 46, Bộ luật Lao động 2019 — <a href='https://vbpl.vn' target='_blank' rel='noopener'>tra cứu trên vbpl.vn</a></p>" +
+        "</section>";
+
+      /* Thẻ 2: mất việc */
+      html += "<section class='card result-card " + mv.status + "'>" +
+        "<div class='r-head'><div><h3>2 · Trợ cấp mất việc làm</h3>" + pillFor(mv.status) + "</div>" + amountHtml(mv.amount, mv.status) + "</div>" +
+        "<div class='formula'>Công thức: 1 × thời gian tính hưởng × lương bình quân 6 tháng, ít nhất 2 tháng lương<br/>= " + mvFormula + "</div>" +
+        mv.html +
+        "<p class='law'>Căn cứ: Điều 47, Bộ luật Lao động 2019 — <a href='https://vbpl.vn' target='_blank' rel='noopener'>tra cứu trên vbpl.vn</a></p>" +
+        "</section>";
+
+      /* Thẻ 3: BHTN */
+      html += "<section class='card result-card " + bhtn.status + "'>" +
+        "<div class='r-head'><div><h3>3 · Bảo hiểm thất nghiệp</h3>" + (bhtnEligible ? pillOk : pillNo) + "</div>" +
+        (bhtnEligible ? "<div class='r-amount'>" + fmt(bhtnTotal) + "</div>" : "<div class='r-amount none'>—</div>") + "</div>" +
+        "<div class='formula'>Mức hưởng: 60% × lương đóng BHTN bình quân 6 tháng, tối đa 5 × lương tối thiểu vùng<br/>= " + bhtnFormula + "</div>" +
+        "<p><strong>Thời gian hưởng:</strong> đóng 12–36 tháng được 3 tháng; cứ thêm đủ 12 tháng được thêm 1 tháng; tối đa 12 tháng. Bạn đã đóng " + bhtnMonths + " tháng → hưởng <strong>" + duration + " tháng</strong>.</p>" +
+        "<p><strong>Điều kiện (Điều 38):</strong> chấm dứt hợp đồng đúng pháp luật; đã đóng đủ 12 tháng trong " + windowMonths + " tháng trước khi chấm dứt" + (contract === "duoi_12" ? " (hợp đồng từ 1 đến dưới 12 tháng tính trong 36 tháng)" : "") + "; nộp đủ hồ sơ trong 3 tháng kể từ ngày chấm dứt.</p>" +
+        bhtnAlerts +
+        "<p class='law'>Căn cứ: Điều 38–39, Luật Việc làm 74/2025/QH15; Nghị định 374/2025/NĐ-CP, hiệu lực 01/01/2026 — <a href='https://vbpl.vn' target='_blank' rel='noopener'>vbpl.vn</a> · <a href='https://thuvienphapluat.vn' target='_blank' rel='noopener'>thuvienphapluat.vn</a></p>" +
+        "</section>";
+
+      /* Thẻ 4: báo trước */
+      var btExtra = "";
+      if(reason === "tu_nghi_trai_luat"){
+        btExtra = "<div class='alert bad'><strong>Hậu quả khi tự nghỉ trái luật (Điều 40):</strong> không được hưởng trợ cấp thôi việc; phải bồi thường cho công ty <strong>1/2 tháng lương</strong> (" + fmt(0.5 * salaryAvg) + "); nếu vi phạm thời gian báo trước, bồi thường thêm một khoản tiền lương tương ứng với số ngày không báo trước.</div>";
+      } else if(reason === "tu_nghi_dung_luat"){
+        btExtra = "<div class='alert warn'>Nếu bạn nghỉ đúng lý do nhưng <strong>báo trước thiếu ngày</strong>, bạn phải bồi thường một khoản tiền bằng tiền lương của những ngày không báo trước. Báo đủ " + baoTruocTxt + " thì không mất khoản này.</div>";
+      }
+      html += "<section class='card result-card ok'>" +
+        "<div class='r-head'><div><h3>4 · Thời gian báo trước</h3><span class='pill info'>Hợp đồng " + contractLabel + "</span></div>" +
+        "<div class='r-amount' style='font-size:19px'>" + baoTruocTxt + "</div></div>" +
+        "<p>Cả người lao động tự nghỉ (Điều 35) và công ty cho nghỉ (Điều 36) đều phải báo trước <strong>" + baoTruocTxt + "</strong> với loại hợp đồng của bạn.</p>" +
+        "<p><strong>Trường hợp không cần báo trước</strong> (Điều 35 khoản 2 và Điều 36 khoản 3), ví dụ: không được bố trí đúng công việc / địa điểm đã thỏa thuận; không được trả đủ lương hoặc trả không đúng hạn; bị ngược đãi, đánh đập, quấy rối tình dục tại nơi làm việc; lao động nữ mang thai phải nghỉ việc theo chỉ định của cơ sở khám chữa bệnh; bản thân hoặc gia đình gặp khó khăn không thể tiếp tục làm việc.</p>" +
+        btExtra +
+        "<p class='law'>Căn cứ: Điều 35, 36 và 40, Bộ luật Lao động 2019 — <a href='https://luatvietnam.vn' target='_blank' rel='noopener'>luatvietnam.vn</a></p>" +
+        "</section>";
+
+      /* Thẻ 5: checklist + deadline */
+      html += "<section class='card result-card ok'>" +
+        "<h3 style='margin:0 0 4px;font-size:17px;color:var(--blue-deep)'>5 · Checklist hồ sơ &amp; hạn nộp</h3>" +
+        "<div class='deadline-box'>Hạn chót nộp hồ sơ BHTN: <strong>" + fmtDate(deadline) + "</strong><br/>Chấm dứt hợp đồng ngày " + fmtDate(endDate) + " → bạn có đúng 3 tháng để nộp. Quá hạn là mất quyền hưởng BHTN của đợt này.</div>" +
+        "<p><strong>Hồ sơ hưởng BHTN gồm 3 thành phần</strong> (Điều 14, Nghị định 374/2025/NĐ-CP):</p>" +
+        "<ol class='check-list'>" +
+          "<li><span class='n'>1</span><span><strong>Đề nghị hưởng trợ cấp thất nghiệp</strong> theo Mẫu số 10 ban hành kèm Nghị định 374/2025/NĐ-CP.</span></li>" +
+          "<li><span class='n'>2</span><span><strong>Giấy tờ xác nhận chấm dứt hợp đồng</strong> (bản chính, hoặc bản sao chứng thực, hoặc bản sao kèm bản chính để đối chiếu): quyết định thôi việc, quyết định sa thải, thông báo / thỏa thuận chấm dứt hợp đồng, hoặc hợp đồng đã hết hạn…</span></li>" +
+          "<li><span class='n'>3</span><span><strong>Sổ bảo hiểm xã hội</strong> đã được cơ quan BHXH chốt, xác nhận thời gian đóng BHTN.</span></li>" +
+        "</ol>" +
+        "<p><strong>Nộp ở đâu:</strong> nộp trực tiếp tại tổ chức dịch vụ việc làm công (trung tâm dịch vụ việc làm) nơi bạn muốn nhận trợ cấp, hoặc nộp trực tuyến qua <a href='https://dichvucong.gov.vn' target='_blank' rel='noopener' style='color:var(--blue);font-weight:600'>Cổng Dịch vụ công Quốc gia</a>. Tiền hưởng kể từ ngày làm việc thứ 11 kể từ ngày nộp đủ hồ sơ.</p>" +
+        "<p><strong>Bằng chứng nên giữ ngay từ bây giờ</strong> (đặc biệt nếu bị ép nghỉ):</p>" +
+        "<ul class='tight'>" +
+          "<li><strong>Hợp đồng lao động</strong> và các phụ lục, quyết định lương.</li>" +
+          "<li><strong>Bảng lương / phiếu lương / sao kê</strong> nhận lương 6 tháng gần nhất.</li>" +
+          "<li><strong>Tin nhắn, email, văn bản ép nghỉ</strong> hoặc thông báo miệng — chụp màn hình, lưu bản gốc, ghi rõ ngày giờ.</li>" +
+          "<li><strong>Bằng chứng đóng BHXH:</strong> sổ BHXH, quá trình đóng trên ứng dụng VssID.</li>" +
+        "</ul>" +
+        "<p class='law'>Căn cứ: Điều 14, Nghị định 374/2025/NĐ-CP — <a href='https://thuvienphapluat.vn' target='_blank' rel='noopener'>thuvienphapluat.vn</a></p>" +
+        "</section>";
+
+      html += "<div class='disclaimer'><strong>Lưu ý:</strong> Chỉ tham khảo, không phải tư vấn pháp lý. Trường hợp phức tạp nên hỏi luật sư / công đoàn. Số liệu theo luật 2026, kiểm chứng ngày " + LUAT_2026.kiemChungNgay + ".</div>";
+      html += "<button type='button' class='btn-copy' id='btnCopy'>Copy kết quả để chia sẻ</button>";
+
+      var box = $("results");
+      box.innerHTML = html;
+      box.classList.add("show");
+
+      /* ----- Bản text để copy ----- */
+      var L = [];
+      L.push("NGHỈ VIỆC ĐƯỢC GÌ — KẾT QUẢ ƯỚC TÍNH (luật 2026)");
+      L.push("Lương bình quân 6 tháng: " + fmt(salaryAvg) + " · Lương đóng BHTN: " + fmt(salaryBhtn));
+      L.push("Làm việc " + totalMonths + " tháng · Đóng BHXH " + bhxhMonths + " tháng · Đóng BHTN " + bhtnMonths + " tháng · Vùng " + region);
+      L.push("1. Trợ cấp thôi việc (Điều 46 BLLĐ 2019): " + (tv.status === "ok" ? fmt(tv.amount) : "0 đ / không được hưởng"));
+      L.push("2. Trợ cấp mất việc (Điều 47 BLLĐ 2019): " + (mv.status === "ok" ? fmt(mv.amount) : "0 đ / không được hưởng"));
+      L.push("3. BHTN (Luật Việc làm 2025): " + (bhtnEligible ? fmt(monthly) + "/tháng × " + duration + " tháng = " + fmt(bhtnTotal) : "chưa đủ điều kiện"));
+      L.push("4. Báo trước với hợp đồng " + contractLabel + ": " + baoTruocTxt + " (Điều 35, 36 BLLĐ 2019)");
+      L.push("5. Hạn chót nộp hồ sơ BHTN: " + fmtDate(deadline) + " (3 tháng từ ngày chấm dứt " + fmtDate(endDate) + ")");
+      L.push("TỔNG DỰ KIẾN: " + fmt(grandTotal));
+      L.push("Chỉ tham khảo, không phải tư vấn pháp lý.");
+      lastSummaryText = L.join("\n");
+
+      $("btnCopy").addEventListener("click", function(){
+        var btn = this;
+        function done(){
+          btn.innerHTML = "<span class='copy-done'>Đã copy — dán vào Zalo / Messenger để chia sẻ</span>";
+          setTimeout(function(){ btn.textContent = "Copy kết quả để chia sẻ"; }, 2600);
+        }
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(lastSummaryText).then(done, function(){ fallbackCopy(done); });
+        } else { fallbackCopy(done); }
+      });
+
+      box.scrollIntoView({behavior:"smooth", block:"start"});
+    });
+
+    function fallbackCopy(done){
+      var ta = document.createElement("textarea");
+      ta.value = lastSummaryText;
+      ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch(e){}
+      document.body.removeChild(ta);
+      done();
+    }
+    </script>
+  </body>
+</html>
