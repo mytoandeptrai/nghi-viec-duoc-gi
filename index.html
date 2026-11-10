@@ -155,6 +155,11 @@
       .toggle-row .t-desc{font-size:13.5px;color:var(--ink-2);font-weight:400}
       .cond-list{list-style:none;margin:10px 0;padding:0}
       .cond-list li{margin-bottom:8px}
+      .zero-why{background:#fff8e6;border:2px solid #e8a317;border-radius:14px;padding:18px 20px;margin-top:18px;box-shadow:var(--shadow)}
+      .zero-why h3{margin:0 0 8px;font-size:19px;color:#7a5200;font-weight:800}
+      .zero-why p{margin:8px 0;font-size:15px;color:#4a3a10;line-height:1.6}
+      .zero-why .calc-line{background:#fff;border:1.5px solid #f0dcb2;border-radius:10px;padding:10px 12px;font-size:15px;font-weight:600;color:var(--blue-deep);margin:8px 0}
+      .zero-why .calc-line .zero-result{color:var(--bad);font-weight:800}
       .cond-list label{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:14.5px;font-weight:500;background:#fbfcfe;cursor:pointer;margin:0}
       .cond-list input[type="checkbox"]{width:20px;height:20px;flex:0 0 auto;margin-top:2px;accent-color:var(--blue)}
       .province-note{background:#f2f6fd;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:13.5px;color:var(--ink-2);margin-top:10px}
@@ -188,8 +193,16 @@
             <span>Công ty A 5 tháng · 10 triệu — Công ty B 4 tháng · 11 triệu — Công ty C 3 tháng · 12 triệu · Đóng BHTN cộng dồn 12 tháng: được hưởng BHTN, nhưng trợ cấp thôi việc / mất việc ở từng công ty đều 0 vì mỗi nơi làm chưa đủ 12 tháng</span>
           </button>
           <button type="button" class="ex-btn" id="ex4" style="grid-column:1/-1">
-            <strong>Ví dụ 4 — BHXH 1 lần: đóng 5 năm từ 2019 ⭐</strong>
-            <span>Lương bình quân đóng BHXH 10 triệu · Có thời gian đóng trước 1/7/2025, đã nghỉ đủ 12 tháng → BHXH 1 lần ước tính khoảng 100 triệu (5 năm × 2 tháng lương × 10 triệu), chưa tính hệ số điều chỉnh từng năm</span>
+            <strong>Ví dụ 4 — BHXH 1 lần: đóng 5 năm từ 2019, đóng full lương ⭐</strong>
+            <span>Lương đóng BHXH 10 triệu (= lương thực nhận) · Có thời gian đóng trước 1/7/2025, đã nghỉ đủ 12 tháng → BHXH 1 lần ước tính khoảng 100 triệu (5 năm × 2 tháng lương × 10 triệu), chưa tính hệ số điều chỉnh từng năm</span>
+          </button>
+          <button type="button" class="ex-btn" id="ex5" style="grid-column:1/-1">
+            <strong>Ví dụ 5 — BHXH 1 lần: lương 15 triệu nhưng chỉ đóng BHXH trên 5,6 triệu ⭐</strong>
+            <span>Lương thực nhận 15 triệu · Lương đóng BHXH chỉ 5.600.000 đ · Đóng 5 năm từ 2019 → BHXH 1 lần chỉ khoảng 56 triệu (5 năm × 2 × 5,6 triệu), không phải 150 triệu như khi tính nhầm trên full lương</span>
+          </button>
+          <button type="button" class="ex-btn" id="ex6" style="grid-column:1/-1">
+            <strong>Ví dụ 6 — Trợ cấp thôi việc &gt; 0: làm 5 năm nhưng chỉ đóng BHXH 3 năm ⭐</strong>
+            <span>Lương 12 triệu · Làm 5 năm · Chỉ đóng BHXH bắt buộc 3 năm (2 năm còn lại không đóng BHXH) → Thời gian tính hưởng = 5 − 3 = 2 năm → Trợ cấp thôi việc = 1/2 × 2 × 12 triệu = 12.000.000 đ. Ô trợ cấp chỉ có tiền khi có thời gian làm mà không đóng BHXH.</span>
           </button>
         </div>
       </section>
@@ -269,13 +282,23 @@
               </div>
             </div>
             <p class="hint" style="margin-top:-6px">App <strong>tự tách</strong> 2 ô này từ ngày bắt đầu + tổng thời gian đóng (tháng lẻ 1–6 tháng tính nửa năm, 7–11 tháng tính 1 năm). Nếu kết quả tách chưa đúng với sổ BHXH của bạn, cứ sửa tay 2 ô này — số đã sửa tay mới là số dùng để tính tiền.</p>
+            <div class="alert warn" style="margin:0 0 14px"><strong>Quan trọng — BHXH 1 lần không tính trên lương thực nhận:</strong> căn cứ tính <strong>không phải</strong> lương thực nhận, cũng <strong>không phải</strong> lương bình quân 6 tháng liền kề ở mục 1. Căn cứ duy nhất là <strong>tiền lương tháng làm căn cứ đóng BHXH</strong> — mức công ty đăng ký đóng cho bạn, xem trên ứng dụng VssID / sổ BHXH. Nhiều công ty chỉ đóng trên lương cơ bản: ví dụ lương thực nhận 15 triệu nhưng chỉ đóng BHXH trên <strong>5.600.000 đ</strong> thì BHXH 1 lần chỉ tính trên 5,6 triệu, tính trên 15 triệu sẽ ra số cao gấp gần 3 lần số thực nhận.</div>
             <div class="field">
-              <label for="bhxhAvgSalary">Mức bình quân tiền lương tháng đóng BHXH</label>
+              <label for="bhxhDongSalary">Lương đóng BHXH — mức công ty đóng cho bạn mỗi tháng (ô riêng cho BHXH 1 lần)</label>
               <div class="money">
-                <input type="text" id="bhxhAvgSalary" inputmode="numeric" autocomplete="off" placeholder="Ví dụ: 10.000.000" />
+                <input type="text" id="bhxhDongSalary" inputmode="numeric" autocomplete="off" placeholder="Ví dụ: 5.600.000" />
                 <span class="unit">đ/tháng</span>
               </div>
-              <p class="hint">Là mức bình quân tiền lương tháng đóng BHXH <strong>đã điều chỉnh theo hệ số trượt giá</strong> (hệ số điều chỉnh thu nhập từng năm). Nếu bạn nhập lương chưa điều chỉnh thì kết quả chỉ là ước tính, thường thấp hơn số thực nhận.</p>
+              <p class="hint">Nhập đúng mức ghi trên VssID / sổ BHXH. Đóng full lương thì mức này bằng lương thực nhận; chỉ đóng trên lương cơ bản thì nhập mức thấp đó. <button type="button" id="bhxhSet56">Điền 5.600.000 đ</button> · <button type="button" id="bhxhSetFull">Đóng full lương — lấy lương ở công ty cuối cùng</button></p>
+              <p class="hint" id="bhxhDongWarn" style="font-weight:600"></p>
+            </div>
+            <div class="field">
+              <label for="bhxhAvgSalary">Mức bình quân tiền lương tháng đóng BHXH (toàn bộ thời gian đóng) — số dùng trực tiếp trong công thức</label>
+              <div class="money">
+                <input type="text" id="bhxhAvgSalary" inputmode="numeric" autocomplete="off" placeholder="Ví dụ: 5.600.000" />
+                <span class="unit">đ/tháng</span>
+              </div>
+              <p class="hint">Nếu bạn đóng đều một mức (ví dụ đều 5,6 triệu suốt thời gian đóng) thì ô này <strong>bằng lương đóng BHXH ở trên</strong> — app tự điền theo khi bạn nhập ô trên. Nếu mức đóng thay đổi qua các năm, hãy nhập mức bình quân tiền lương tháng đóng BHXH <strong>đã điều chỉnh theo hệ số trượt giá</strong> (hệ số điều chỉnh thu nhập từng năm) nếu biết; sửa tay ô này thì app dùng số bạn sửa. Để trống ô này, app tự dùng lương đóng BHXH ở trên. Nhập lương chưa điều chỉnh thì kết quả chỉ là ước tính, thường thấp hơn số thực nhận.</p>
             </div>
             <div class="field">
               <label>Điều kiện hưởng BHXH 1 lần — tick trường hợp đúng với bạn</label>
@@ -393,7 +416,7 @@
       html += "<div class='field'><label>Tên công ty (tuỳ chọn)</label><input type='text' data-f='name' placeholder='Ví dụ: Công ty A' value='"+esc(defName)+"' /></div>";
       html += "<div class='field'><label>Lương bình quân 6 tháng liền kề ở công ty này</label><div class='money'><input type='text' data-f='salary' inputmode='numeric' autocomplete='off' placeholder='Ví dụ: 12.000.000' /><span class='unit'>đ/tháng</span></div></div>";
       html += "<div class='field'><label>Tổng thời gian làm việc ở công ty này</label><div class='duo'><div class='mini'><label>Năm</label><input type='number' data-f='workYears' min='0' max='60' inputmode='numeric' placeholder='0' /></div><div class='mini'><label>Tháng</label><input type='number' data-f='workMonths' min='0' max='11' inputmode='numeric' placeholder='0' /></div></div></div>";
-      html += "<div class='field'><label>Thời gian đã đóng BHXH bắt buộc ở công ty này</label><div class='duo'><div class='mini'><label>Năm</label><input type='number' data-f='bhxhYears' min='0' max='60' inputmode='numeric' placeholder='0' /></div><div class='mini'><label>Tháng</label><input type='number' data-f='bhxhMonths' min='0' max='11' inputmode='numeric' placeholder='0' /></div></div><p class='hint'>Thời gian này được trừ ra khi tính trợ cấp thôi việc của riêng công ty này — đóng BHXH càng đầy đủ, trợ cấp thôi việc càng nhỏ và thường bằng 0.</p></div>";
+      html += "<div class='field'><label>Thời gian đã đóng BHXH bắt buộc ở công ty này</label><div class='duo'><div class='mini'><label>Năm</label><input type='number' data-f='bhxhYears' min='0' max='60' inputmode='numeric' placeholder='0' /></div><div class='mini'><label>Tháng</label><input type='number' data-f='bhxhMonths' min='0' max='11' inputmode='numeric' placeholder='0' /></div></div><p class='hint'>Thời gian này được trừ ra khi tính trợ cấp thôi việc của riêng công ty này. <strong>Nếu công ty đã đóng BHXH đủ suốt thời gian làm việc thì trợ cấp thôi việc/mất việc thường = 0đ, chỉ còn BHTN.</strong></p></div>";
       html += "<div class='grid2'><div class='field'><label>Số tháng đã đóng BHTN ở công ty này</label><input type='number' data-f='bhtnMonthsCo' min='0' max='720' inputmode='numeric' placeholder='Ví dụ: 12' /><p class='hint'>Chỉ tính tháng chưa hưởng trợ cấp thất nghiệp lần nào. Thường bằng thời gian đóng BHXH ở trên nếu đóng đầy đủ.</p></div>" +
         "<div class='field'><label>Đã hưởng trợ cấp ở công ty này (tháng)</label><input type='number' data-f='priorMonths' min='0' max='720' inputmode='numeric' placeholder='0' value='0' /><p class='hint'>Thời gian làm việc đã được chi trả trợ cấp thôi việc / mất việc trước đó. Hầu hết trường hợp để 0.</p></div></div>";
       html += "<div class='field'><label>Loại hợp đồng ở công ty này</label><select data-f='contract'>"+optsHtml(CONTRACT_OPTS, data.contract||"khong_xac_dinh")+"</select></div>";
@@ -489,6 +512,42 @@
       $("bhxhBody").style.display = this.checked ? "block" : "none";
     });
     attachMoneyFormat($("bhxhAvgSalary"));
+    attachMoneyFormat($("bhxhDongSalary"));
+    var bhxhAvgManual = false;
+    $("bhxhAvgSalary").addEventListener("input", function(){ bhxhAvgManual = true; updateBhxhDongWarn(); });
+    function updateBhxhDongWarn(){
+      var dong = parseMoney($("bhxhDongSalary").value);
+      var warn = $("bhxhDongWarn");
+      if(!warn) return;
+      var list = allData(); var last = list.length ? lastCompany(list) : null;
+      var real = last ? last.salary : 0;
+      if(dong > 0 && real > 0 && dong < real){
+        warn.textContent = "Lương đóng BHXH (" + fmt(dong) + "/tháng) thấp hơn lương ở công ty cuối cùng (" + fmt(real) + "/tháng) — BHXH 1 lần sẽ chỉ tính trên " + fmt(dong) + ", không tính trên lương thực nhận. Đây là trường hợp đóng BHXH không full lương.";
+        warn.style.color = "#9a5b00";
+      } else if(dong > 0 && real > 0 && dong >= real){
+        warn.textContent = "Lương đóng BHXH bằng / cao hơn lương ở công ty cuối cùng — trường hợp đóng full lương.";
+        warn.style.color = "#0e7a3d";
+      } else { warn.textContent = ""; }
+    }
+    $("bhxhDongSalary").addEventListener("input", function(){
+      var dong = parseMoney($("bhxhDongSalary").value);
+      if(!bhxhAvgManual && dong > 0) $("bhxhAvgSalary").value = dong.toLocaleString("vi-VN");
+      updateBhxhDongWarn();
+    });
+    $("bhxhSet56").addEventListener("click", function(){
+      bhxhAvgManual = false;
+      $("bhxhDongSalary").value = (5600000).toLocaleString("vi-VN");
+      $("bhxhAvgSalary").value = (5600000).toLocaleString("vi-VN");
+      updateBhxhDongWarn();
+    });
+    $("bhxhSetFull").addEventListener("click", function(){
+      var list = allData(); if(!list.length) return;
+      var last = lastCompany(list); if(!last || last.salary <= 0) return;
+      bhxhAvgManual = false;
+      $("bhxhDongSalary").value = last.salary.toLocaleString("vi-VN");
+      $("bhxhAvgSalary").value = last.salary.toLocaleString("vi-VN");
+      updateBhxhDongWarn();
+    });
     function bhxhRoundYears(months){
       if(months <= 0) return 0;
       var f = Math.floor(months/12), r = months % 12;
@@ -582,9 +641,37 @@
       $("bhxhTotMonths").value = 0;
       $("bhxhPreYears").value = 0;
       $("bhxhPostYears").value = 5;
+      bhxhAvgManual = false;
+      $("bhxhDongSalary").value = (10000000).toLocaleString("vi-VN");
       $("bhxhAvgSalary").value = (10000000).toLocaleString("vi-VN");
+      updateBhxhDongWarn();
       var conds = document.querySelectorAll(".bhxh-cond");
       for(var i=0;i<conds.length;i++){ conds[i].checked = conds[i].value === "c5"; }
+    });
+    $("ex5").addEventListener("click", function(){
+      setCompanies([{name:"Công ty A", salary:15000000, workYears:5, workMonths:0, bhxhYears:5, bhxhMonths:0, bhtnMonthsCo:60, priorMonths:0, contract:"khong_xac_dinh", reason:"thoa_thuan", endDate: todayStr()}], "I");
+      $("province").value = "";
+      $("provinceHint").textContent = "";
+      $("bhxhEnable").checked = true;
+      $("bhxhBody").style.display = "block";
+      $("bhxhStart").value = "2019-01-01";
+      $("bhxhTotYears").value = 5;
+      $("bhxhTotMonths").value = 0;
+      $("bhxhPreYears").value = 0;
+      $("bhxhPostYears").value = 5;
+      bhxhAvgManual = false;
+      $("bhxhDongSalary").value = (5600000).toLocaleString("vi-VN");
+      $("bhxhAvgSalary").value = (5600000).toLocaleString("vi-VN");
+      updateBhxhDongWarn();
+      var conds = document.querySelectorAll(".bhxh-cond");
+      for(var i=0;i<conds.length;i++){ conds[i].checked = conds[i].value === "c5"; }
+    });
+    $("ex6").addEventListener("click", function(){
+      setCompanies([{name:"Công ty A", salary:12000000, workYears:5, workMonths:0, bhxhYears:3, bhxhMonths:0, bhtnMonthsCo:36, priorMonths:0, contract:"khong_xac_dinh", reason:"thoa_thuan", endDate: todayStr()}], "I");
+      $("province").value = "";
+      $("provinceHint").textContent = "";
+      $("bhxhEnable").checked = false;
+      $("bhxhBody").style.display = "none";
     });
 
     /* Khởi tạo: 1 công ty trống */
@@ -650,7 +737,9 @@
         if(!c.endVal) errors.push("Hãy chọn ngày chấm dứt ở " + c.name + ".");
       });
       var bhxhEnabled = $("bhxhEnable").checked;
-      var bhxhAvg = parseMoney($("bhxhAvgSalary").value);
+      var bhxhDong = parseMoney($("bhxhDongSalary").value);
+      var bhxhAvgRaw = parseMoney($("bhxhAvgSalary").value);
+      var bhxhAvg = bhxhAvgRaw > 0 ? bhxhAvgRaw : bhxhDong;
       var bhxhTotalMonths = intVal($("bhxhTotYears").value)*12 + intVal($("bhxhTotMonths").value);
       var bhxhPreY = parseFloat($("bhxhPreYears").value) || 0;
       var bhxhPostY = parseFloat($("bhxhPostYears").value) || 0;
@@ -661,7 +750,7 @@
       if(salaryBhtn <= 0) errors.push("Hãy nhập lương đóng BHTN bình quân 6 tháng gần nhất.");
       if(bhxhEnabled){
         if(bhxhTotalMonths <= 0) errors.push("Mục BHXH 1 lần: hãy nhập tổng thời gian đóng BHXH.");
-        if(bhxhAvg <= 0) errors.push("Mục BHXH 1 lần: hãy nhập mức bình quân tiền lương tháng đóng BHXH.");
+        if(bhxhAvg <= 0) errors.push("Mục BHXH 1 lần: hãy nhập lương đóng BHXH ở ô riêng của mục 3 (mức công ty đóng cho bạn, ví dụ 5.600.000 đ) — không dùng lương thực nhận / lương bình quân 6 tháng ở mục 1 thay cho ô này.");
       }
       if(errors.length){ err.textContent = errors.join(" "); err.classList.add("show"); err.scrollIntoView({behavior:"smooth", block:"center"}); return; }
 
@@ -723,6 +812,10 @@
         } else {
           bhxhAlerts += "<div class='alert ok'><strong>Có trường hợp được hưởng</strong> theo bạn tự khai ở mục điều kiện (Điều 70). Cơ quan BHXH sẽ đối chiếu hồ sơ thực tế khi giải quyết.</div>";
         }
+        if(bhxhDong > 0 && last.salary > bhxhDong){
+          var fullEst = (bhxhTotalMonths < 12) ? Math.min(LUAT_2026.bhxhTyLeDongHuuTri * last.salary * bhxhTotalMonths, 2 * last.salary) : (bhxhPreY * LUAT_2026.bhxhTruoc2014 + bhxhPostY * LUAT_2026.bhxhTu2014) * last.salary;
+          bhxhAlerts += "<div class='alert warn'><strong>Đang tính trên lương đóng BHXH, không phải lương thực nhận:</strong> lương đóng BHXH của bạn là " + fmt(bhxhDong) + "/tháng, thấp hơn lương ở công ty cuối cùng (" + fmt(last.salary) + "/tháng). Nếu tính nhầm trên full lương thực nhận, kết quả sẽ là khoảng " + fmt(fullEst) + " — cao hơn " + fmt(Math.max(0, fullEst - bhxhAmount)) + " so với số đúng tính trên lương đóng BHXH. App dùng lương đóng BHXH nên kết quả bên dưới mới là số nên tham khảo.</div>";
+        }
         bhxhAlerts += "<div class='alert warn'><strong>Ước tính:</strong> con số này chưa tính hệ số điều chỉnh thu nhập (trượt giá) của từng năm đóng nếu mức lương bạn nhập chưa được điều chỉnh — số thực nhận có thể khác. Và nhớ: <strong>rút xong thì thời gian đã đóng mất luôn</strong>, không tính lại được cho lương hưu.</div>";
       }
 
@@ -739,12 +832,54 @@
       if(bhxhEnabled){
         bhxhRowHtml = "<div class='t-row'><div class='k'>BHXH một lần (rút 1 cục)</div><div class='v'>" + fmt(bhxhCounted) + "</div><div class='d'>" + (bhxhEligible ? "Ước tính theo Điều 70 Luật BHXH 2024 — đã cộng vào tổng" : "Chưa đủ điều kiện rút nên chưa cộng vào tổng; ước tính nếu được rút: " + fmt(bhxhAmount)) + "</div></div>";
       }
+      /* Hộp giải thích nổi bật khi trợ cấp thôi việc / mất việc = 0 — dùng số thật của người dùng */
+      var zeroWhyHtml = "";
+      (function(){
+        function durTxt(m){
+          if(m <= 0) return "0 tháng (0 năm)";
+          var y = Math.floor(m/12), r = m % 12;
+          if(r === 0) return m + " tháng (" + y + " năm)";
+          if(y === 0) return m + " tháng";
+          return m + " tháng (" + y + " năm " + r + " tháng)";
+        }
+        var lines = [];
+        var anyCoCau = false;
+        list.forEach(function(c){ if(c.reason === "co_cau") anyCoCau = true; });
+        list.forEach(function(c,i){
+          var x = calcs[i];
+          if(x.tvAmount === 0 && c.reason !== "co_cau"){
+            if(c.totalMonths >= 12 && c.reason !== "luong_huu" && c.reason !== "tu_nghi_trai_luat" && c.reason !== "sa_thai" && x.tvCounted <= 0){
+              lines.push("<div class='calc-line'><strong>" + esc(c.name) + " — trợ cấp thôi việc (Điều 46):</strong><br/>Thời gian tính hưởng = tổng thời gian làm việc " + durTxt(c.totalMonths) + " − thời gian đã đóng BHXH bắt buộc " + durTxt(c.bhxhMonths) + " − thời gian đã hưởng trợ cấp trước đó " + durTxt(c.priorMonths) + " = <span class='zero-result'>0 năm</span><br/>→ 1/2 × 0 năm × lương " + fmt(c.salary) + " = <span class='zero-result'>0 đ</span></div>");
+            } else if(c.totalMonths < 12 && c.reason !== "luong_huu" && c.reason !== "tu_nghi_trai_luat" && c.reason !== "sa_thai"){
+              lines.push("<div class='calc-line'><strong>" + esc(c.name) + " — trợ cấp thôi việc (Điều 46):</strong><br/>Bạn mới làm " + durTxt(c.totalMonths) + " ở công ty này, <strong>chưa đủ 12 tháng</strong> nên chưa phát sinh trợ cấp thôi việc → <span class='zero-result'>0 đ</span></div>");
+            } else {
+              lines.push("<div class='calc-line'><strong>" + esc(c.name) + " — trợ cấp thôi việc (Điều 46):</strong><br/>" + esc(x.tvNote) + " → <span class='zero-result'>0 đ</span></div>");
+            }
+          }
+          if(x.mvAmount === 0 && c.reason === "co_cau"){
+            if(c.totalMonths >= 12 && x.mvCounted <= 0){
+              lines.push("<div class='calc-line'><strong>" + esc(c.name) + " — trợ cấp mất việc (Điều 47):</strong><br/>Thời gian tính hưởng = tổng thời gian làm việc " + durTxt(c.totalMonths) + " − thời gian đã đóng BHTN " + durTxt(c.bhtnMonthsCo) + " − thời gian đã hưởng trợ cấp trước đó " + durTxt(c.priorMonths) + " = <span class='zero-result'>0 năm</span><br/>→ 1 × 0 năm × lương " + fmt(c.salary) + " = <span class='zero-result'>0 đ</span></div>");
+            } else if(c.totalMonths < 12){
+              lines.push("<div class='calc-line'><strong>" + esc(c.name) + " — trợ cấp mất việc (Điều 47):</strong><br/>Bạn mới làm " + durTxt(c.totalMonths) + " ở công ty này, <strong>chưa đủ 12 tháng</strong> nên chưa phát sinh trợ cấp mất việc → <span class='zero-result'>0 đ</span></div>");
+            }
+          }
+        });
+        var showBox = (tvTotal === 0 && lines.length > 0) || (mvTotal === 0 && anyCoCau && lines.length > 0);
+        if(!showBox) return;
+        var title = "Vì sao trợ cấp = 0đ?";
+        zeroWhyHtml = "<div class='zero-why'><h3>" + title + "</h3>" +
+          "<p>Trợ cấp thôi việc (Điều 46) và trợ cấp mất việc (Điều 47) <strong>không tính trên toàn bộ thời gian làm việc</strong>. Luật bắt trừ đi thời gian đã đóng BHXH bắt buộc / bảo hiểm thất nghiệp và thời gian đã được trả trợ cấp trước đó — phần thời gian đã đóng bảo hiểm thì do <strong>BHTN chi trả thay</strong>, không trả trùng thêm bằng trợ cấp. Phép trừ bằng chính số liệu của bạn:</p>" +
+          lines.join("") +
+          "<p><strong>Nếu công ty đã đóng BHXH đủ suốt thời gian làm việc thì trợ cấp này = 0 là đúng luật</strong> — không phải app tính sai hay thiếu, và ô trợ cấp không phải để “cho hi vọng”. <strong>Quyền lợi chính của bạn lúc này là bảo hiểm thất nghiệp (BHTN)</strong> ở mục 3 bên dưới.</p>" +
+          "<p>Trợ cấp chỉ lớn hơn 0 khi có <strong>thời gian làm việc mà không đóng BHXH</strong>. Ví dụ: làm 5 năm nhưng chỉ đóng BHXH 3 năm thì thời gian tính hưởng còn 2 năm → trợ cấp thôi việc = 1/2 × 2 × lương (bấm <strong>Ví dụ 6</strong> ở đầu trang để xem số tiền thật).</p></div>";
+      })();
       var html = "";
       html += "<div class='total-card'><div class='t-label'>Tổng quyền lợi dự kiến</div><div class='t-value'>"+fmt(grandTotal)+"</div><div class='total-rows'>" +
         "<div class='t-row'><div class='k'>Các công ty trả một lần (trợ cấp)</div><div class='v'>"+fmt(companyPays)+"</div><div class='d'>Cộng trợ cấp của "+list.length+" công ty — chi tiết bên dưới</div></div>" +
         "<div class='t-row'><div class='k'>Bảo hiểm thất nghiệp (chi trả hằng tháng)</div><div class='v'>"+fmt(bhtnTotal)+"</div><div class='d'>"+(bhtnEligible ? fmt(monthly)+"/tháng × "+duration+" tháng" : "Chưa đủ điều kiện")+"</div></div>" +
         bhxhRowHtml +
         "</div></div>";
+      html += zeroWhyHtml;
 
       /* Bảng chi tiết từng công ty */
       var rows = "";
@@ -797,7 +932,8 @@
       if(bhxhEnabled){
         html += "<section class='card result-card "+(bhxhEligible?"ok":"no")+"'><div class='r-head'><div><h3>5 · BHXH một lần — rút 1 cục</h3>"+(bhxhEligible?pillOk:pillNo)+"</div><div class='r-amount'>"+fmt(bhxhAmount)+"</div></div>" +
           "<div class='formula'>Cách tính (Điều 70): mỗi năm đóng trước 2014 = 1,5 tháng lương bình quân; mỗi năm đóng từ 2014 = 2 tháng lương bình quân. Tháng lẻ 1–6 tháng tính nửa năm, 7–11 tháng tính 1 năm.<br/>" + bhxhFormula + "</div>" +
-          "<p><strong>Thời gian đóng của bạn:</strong> tổng " + bhxhTotalMonths + " tháng, trong đó " + yrTxt(bhxhPreY) + " năm trước 2014 và " + yrTxt(bhxhPostY) + " năm từ 2014 trở đi, mức bình quân tiền lương tháng đóng BHXH " + fmt(bhxhAvg) + ".</p>" +
+          "<p><strong>Thời gian đóng của bạn:</strong> tổng " + bhxhTotalMonths + " tháng, trong đó " + yrTxt(bhxhPreY) + " năm trước 2014 và " + yrTxt(bhxhPostY) + " năm từ 2014 trở đi.</p>" +
+          "<p><strong>Căn cứ tính:</strong> lương đóng BHXH " + (bhxhDong > 0 ? fmt(bhxhDong) + "/tháng" : "—") + " · mức bình quân tiền lương tháng đóng BHXH dùng trong công thức " + fmt(bhxhAvg) + "/tháng · lương ở công ty cuối cùng (lương thực nhận / bình quân 6 tháng, <strong>không</strong> dùng cho BHXH 1 lần) " + fmt(last.salary) + "/tháng.</p>" +
           "<p><strong>Điều kiện hưởng (Điều 70, Luật BHXH 2024, hiệu lực 01/7/2025):</strong> đủ tuổi hưu nhưng chưa đủ 15 năm đóng; ra nước ngoài định cư; mắc bệnh nguy hiểm (ung thư, bại liệt, xơ gan mất bù, lao nặng, AIDS); suy giảm lao động từ 81% trở lên / khuyết tật đặc biệt nặng; hoặc có thời gian đóng trước 01/7/2025, sau 12 tháng không tham gia BHXH bắt buộc / tự nguyện, tổng chưa đủ 20 năm.</p>" +
           bhxhAlerts +
           "<p class='law'>Căn cứ: Điều 70, Luật Bảo hiểm xã hội 2024, hiệu lực 01/7/2025 — <a href='https://vbpl.vn' target='_blank' rel='noopener'>vbpl.vn</a> · <a href='https://luatvietnam.vn' target='_blank' rel='noopener'>luatvietnam.vn</a></p></section>";
@@ -828,11 +964,17 @@
       list.forEach(function(c,i){ var x=calcs[i]; L.push("- " + c.name + ": làm " + c.totalMonths + " tháng, lương " + fmt(c.salary) + " → thôi việc " + fmt(x.tvAmount) + ", mất việc " + fmt(x.mvAmount) + ", cộng " + fmt(x.total)); });
       L.push("1. Trợ cấp thôi việc (Điều 46 BLLĐ 2019) — tổng: " + fmt(tvTotal));
       L.push("2. Trợ cấp mất việc (Điều 47 BLLĐ 2019) — tổng: " + fmt(mvTotal));
+      if(tvTotal === 0){
+        var c0 = list[0], x0 = calcs[0];
+        if(c0 && x0 && c0.totalMonths >= 12 && x0.tvCounted <= 0 && c0.reason !== "co_cau" && c0.reason !== "luong_huu" && c0.reason !== "tu_nghi_trai_luat" && c0.reason !== "sa_thai"){
+          L.push("   Vì sao trợ cấp thôi việc = 0 đ? Thời gian tính hưởng = làm việc " + c0.totalMonths + " tháng − đã đóng BHXH bắt buộc " + c0.bhxhMonths + " tháng − đã hưởng trợ cấp trước đó " + c0.priorMonths + " tháng = 0 → 1/2 × 0 × " + fmt(c0.salary) + " = 0 đ. Nếu công ty đã đóng BHXH đủ suốt thời gian làm việc thì trợ cấp = 0 là đúng luật, quyền lợi chính lúc này là BHTN.");
+        }
+      }
       L.push("3. BHTN cộng dồn " + bhtnMonths + " tháng (Luật Việc làm 2025): " + (bhtnEligible ? fmt(monthly) + "/tháng × " + duration + " tháng = " + fmt(bhtnTotal) : "chưa đủ điều kiện"));
       L.push("   Lương đóng BHTN (công ty cuối " + last.name + "): " + fmt(salaryBhtn));
       L.push("4. Báo trước theo hợp đồng ở công ty cuối (" + contractLabel + "): " + baoTruocTxt + " (Điều 35, 36 BLLĐ 2019)");
       if(bhxhEnabled){
-        L.push("5. BHXH một lần (Điều 70 Luật BHXH 2024): đóng " + bhxhTotalMonths + " tháng (" + yrTxt(bhxhPreY) + " năm trước 2014, " + yrTxt(bhxhPostY) + " năm từ 2014), lương bình quân " + fmt(bhxhAvg) + " → ước tính " + fmt(bhxhAmount) + (bhxhEligible ? " — có trường hợp được hưởng theo tự khai, đã cộng vào tổng" : " — chưa đủ điều kiện nên chưa cộng vào tổng") + ". Ước tính chưa tính hệ số điều chỉnh từng năm.");
+        L.push("5. BHXH một lần (Điều 70 Luật BHXH 2024): đóng " + bhxhTotalMonths + " tháng (" + yrTxt(bhxhPreY) + " năm trước 2014, " + yrTxt(bhxhPostY) + " năm từ 2014), lương đóng BHXH " + (bhxhDong > 0 ? fmt(bhxhDong) : "—") + ", mức bình quân tiền lương tháng đóng BHXH dùng tính " + fmt(bhxhAvg) + " (không dùng lương thực nhận " + fmt(last.salary) + ") → ước tính " + fmt(bhxhAmount) + (bhxhEligible ? " — có trường hợp được hưởng theo tự khai, đã cộng vào tổng" : " — chưa đủ điều kiện nên chưa cộng vào tổng") + ". Ước tính chưa tính hệ số điều chỉnh từng năm.");
         L.push("6. Hạn chót nộp hồ sơ BHTN: " + fmtDate(deadline) + " (3 tháng từ ngày chấm dứt ở công ty cuối " + fmtDate(endDate) + ")");
       } else {
         L.push("5. Hạn chót nộp hồ sơ BHTN: " + fmtDate(deadline) + " (3 tháng từ ngày chấm dứt ở công ty cuối " + fmtDate(endDate) + ")");
